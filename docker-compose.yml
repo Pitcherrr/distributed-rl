@@ -1,0 +1,26 @@
+services:
+  agent:
+    build: .
+    environment:
+      - RANK=0
+      - WORLD_SIZE=2
+      - MASTER_ADDR=agent
+      - MASTER_PORT=29500
+    command: ["python", "torch_dist_rl_example.py", "--backend", "nccl"]
+    runtime: nvidia
+    networks:
+      - rl-net
+  env:
+    build: .
+    environment:
+      - RANK=1
+      - WORLD_SIZE=2
+      - MASTER_ADDR=agent
+      - MASTER_PORT=29500
+    command: ["python", "torch_dist_rl_example.py", "--backend", "nccl"]
+    runtime: nvidia
+    networks:
+      - rl-net
+networks:
+  rl-net:
+    driver: bridge
