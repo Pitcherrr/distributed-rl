@@ -1,0 +1,6 @@
+swig
+gymnasium[box2d]
+gymnasium
+ray[rllib]
+
+

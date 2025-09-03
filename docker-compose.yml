@@ -6,7 +6,7 @@ services:
       - WORLD_SIZE=2
       - MASTER_ADDR=agent
       - MASTER_PORT=29500
-    command: ["python", "torch_dist_rl_example.py", "--backend", "nccl"]
+    command: ["python", "ray_server.py"]
     runtime: nvidia
     networks:
       - rl-net
@@ -17,7 +17,7 @@ services:
       - WORLD_SIZE=2
       - MASTER_ADDR=agent
       - MASTER_PORT=29500
-    command: ["python", "torch_dist_rl_example.py", "--backend", "nccl"]
+    command: ["python", "test_env.py"]
     runtime: nvidia
     networks:
       - rl-net
