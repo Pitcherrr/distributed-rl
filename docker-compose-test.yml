@@ -1,0 +1,15 @@
+services:
+  test:
+    build: .
+    environment:
+      - RANK=0
+      - WORLD_SIZE=2
+      - MASTER_ADDR=agent
+      - MASTER_PORT=29500
+    command: ["python", "ray_nccl_test.py", "--use_dummy_client=true"]
+    runtime: nvidia
+    networks:
+      - rl-net
+networks:
+  rl-net:
+    driver: bridge

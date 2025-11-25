@@ -10,4 +10,4 @@ RUN pip install -r requirements.txt
 
 COPY ./ ./
 
-CMD ["python", "torch_dist_rl_example.py", "--backend", "nccl"]
+CMD ["python", "ray_nccl_test.py"]

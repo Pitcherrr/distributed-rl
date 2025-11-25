@@ -6,7 +6,7 @@ services:
       - WORLD_SIZE=2
       - MASTER_ADDR=agent
       - MASTER_PORT=29500
-    command: ["python", "ray_server.py"]
+    command: ["python", "ray_server_2.py"]
     runtime: nvidia
     networks:
       - rl-net
