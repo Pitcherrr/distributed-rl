@@ -44,7 +44,7 @@ if __name__ == "__main__":
         .get_default_config()
         .environment(
             observation_space=gym.spaces.Box(
-                float("-inf"), float("-inf"), (4,), np.float32
+                float("-inf"), float("-inf"), (4,), np.float64
             ),
             action_space=gym.spaces.Discrete(2),
             # EnvRunners listen on `port` + their worker index.

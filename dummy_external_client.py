@@ -37,7 +37,8 @@ def _dummy_external_client(port: int = 5556):
     def _init():
         nonlocal initialized
         if not initialized:
-            dist.init_process_group(backend="nccl", rank=0, world_size=3)
+            # dist.init_process_group(backend="nccl", rank=0, world_size=2)
+            dist.init_process_group(backend="gloo", rank=0, world_size=2)
             initialized = True
 
     print("Creating process group with NCCL backend")
@@ -46,6 +47,7 @@ def _dummy_external_client(port: int = 5556):
     # Initialize environment
     env = gym.make("CartPole-v1")
     obs, _ = env.reset()
+    print("obs", obs)
     episode = SingleAgentEpisode(observations=[obs])
     episodes = [episode]
 
@@ -85,15 +87,17 @@ def _dummy_external_client(port: int = 5556):
         _init()
 
         # Send data to server using NCCL
-        dist.send(tensor, dst=1)
+        # dist.send(tensor, dst=1)
 
         # Prepare to receive data on the GPU
         recv_tensor = torch.empty_like(tensor, device='cuda')
-        dist.recv(recv_tensor, src=1)
+        # dist.recv(recv_tensor, src=1)
 
         # Move received tensor back to CPU for processing
-        updated_state = pickle.loads(bytes(recv_tensor.cpu().tolist()))
-        _set_state(updated_state, rl_module)
+        # updated_state = pickle.loads(bytes(recv_tensor.cpu().tolist()))
+        # updated_state = pickle.loads(bytes(recv_tensor.cpu().numpy().astype('uint8')))
+
+        # _set_state(updated_state, rl_module)
 
         episodes = []
         if not episode.is_done:
@@ -105,3 +109,5 @@ def _dummy_external_client(port: int = 5556):
             obs, _ = env.reset()
             episode = SingleAgentEpisode(observations=[obs])
             episodes.append(episode)
+
+        time.sleep(2)
